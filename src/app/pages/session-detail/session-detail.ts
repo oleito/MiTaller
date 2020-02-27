@@ -64,4 +64,14 @@ export class SessionDetailPage {
   shareSession() {
     console.log('Clicked share session');
   }
+
+  async openSocial(network: string, fab: HTMLIonFabElement) {
+    // const loading = await this.loadingCtrl.create({
+    //   message: `Posting to ${network}`,
+    //   duration: (Math.random() * 1000) + 500
+    // });
+    // await loading.present();
+    // await loading.onWillDismiss();
+    // fab.close();
+  }
 }

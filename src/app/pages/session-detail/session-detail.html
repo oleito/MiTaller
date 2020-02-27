@@ -26,7 +26,7 @@
     </ion-text>
   </div>
 
-  <ion-list>
+  <!-- <ion-list>
     <ion-item (click)="sessionClick('watch')" button>
       <ion-label color="primary">Watch</ion-label>
     </ion-item>
@@ -43,5 +43,41 @@
     <ion-item (click)="sessionClick('leave feedback')" button>
       <ion-label color="primary">Leave Feedback</ion-label>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
+
+  <ion-grid>
+    
+    <ion-row>
+      <ion-col size="8">
+        Paragolpes delantero
+      </ion-col>
+      <ion-col>
+        Reparar
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="8">
+        Paragolpes trasero
+      </ion-col>
+      <ion-col>
+        Pintar
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" #fab>
+    <ion-fab-button>
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="tertiary" (click)="openSocial('Vimeo', fab)">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="success" (click)="openSocial('Vimeo', fab)">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

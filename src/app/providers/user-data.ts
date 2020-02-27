@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { ApiService } from '../services/api.service';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserData {
+
   _favorites: string[] = [];
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 
   constructor(
-    public storage: Storage
+    public storage: Storage,
+    private apiService: ApiService
   ) { }
 
   hasFavorite(sessionName: string): boolean {
@@ -29,12 +33,20 @@ export class UserData {
     }
   }
 
-  login(username: string): Promise<any> {
-    return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-      this.setUsername(username);
-      return window.dispatchEvent(new CustomEvent('user:login'));
-    });
+  login(username: string, password: string) {
+    const toSendData = {
+      'user': {
+        'userName': username,
+        'userPassword': password
+      }
+    };
+    return this.apiService.postData('login', toSendData);
   }
+
+  // return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
+  //   this.setUsername(username);
+  //   return window.dispatchEvent(new CustomEvent('user:login'));
+  // });
 
   signup(username: string): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
