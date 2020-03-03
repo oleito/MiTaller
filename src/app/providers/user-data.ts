@@ -36,17 +36,14 @@ export class UserData {
   login(username: string, password: string) {
     const toSendData = {
       'user': {
-        'userName': username,
-        'userPassword': password
+        // 'userName': username,
+        // 'userPassword': password
+        'userName': 'sistemas@parisautos.com.ar',
+        'userPassword': '1q2w3eparisNadarisca32'
       }
     };
     return this.apiService.postData('login', toSendData);
   }
-
-  // return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-  //   this.setUsername(username);
-  //   return window.dispatchEvent(new CustomEvent('user:login'));
-  // });
 
   signup(username: string): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {

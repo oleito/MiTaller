@@ -14,6 +14,15 @@
               "location": "Ingreso",
               "tracks": ["Ingreso"],
               "id": "1"
+            },
+            {
+              "name": "IDX 917",
+              "description": "Vehiculo de ejemplo. Gol Country",
+              "timeStart": "02/01/2020",
+              "timeEnd": "26/01/2020",
+              "location": "Ingreso",
+              "tracks": ["Ingreso"],
+              "id": "1"
             }
           ]
         },

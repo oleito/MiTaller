@@ -5,6 +5,8 @@ import { AlertController, IonList, LoadingController, ModalController, ToastCont
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
+import { ScheduleService } from '../../services/schedule.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'page-schedule',
@@ -16,12 +18,14 @@ export class SchedulePage implements OnInit {
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
 
   ios: boolean;
+  esperandoDatosSchedule = false;
   dayIndex = 0;
   queryText = '';
   segment = 'all';
   excludeTracks: any = [];
   shownSessions: any = [];
   groups: any = [];
+  groups2: any = [];
   confDate: string;
 
   constructor(
@@ -32,7 +36,8 @@ export class SchedulePage implements OnInit {
     public router: Router,
     public toastCtrl: ToastController,
     public user: UserData,
-    public config: Config
+    public config: Config,
+    public scheduleService: ScheduleService
   ) { }
 
   ngOnInit() {
@@ -47,10 +52,24 @@ export class SchedulePage implements OnInit {
       this.scheduleList.closeSlidingItems();
     }
 
+    console.clear();
+    console.log('intentando obtener datos');
+    this.esperandoDatosSchedule = true;
+    this.scheduleService.getScheduleData().subscribe((res: HttpResponse<any>) => {
+      this.groups2 = res.body;
+      this.esperandoDatosSchedule = false
+      console.log(this.groups2);
+    });
+
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
     });
+    /**
+
+
+
+    */
   }
 
   async presentFilter() {

@@ -9,38 +9,47 @@ import { UserData } from '../../providers/user-data';
   styleUrls: ['./session-detail.scss'],
   templateUrl: 'session-detail.html'
 })
-export class SessionDetailPage {
+export class SessionDetailPage implements OnInit {
   session: any;
   isFavorite = false;
   defaultHref = '';
+  idtraza: any;
 
   constructor(
     private dataProvider: ConferenceData,
     private userProvider: UserData,
     private route: ActivatedRoute
   ) { }
+  ngOnInit() {
+    console.clear();
+  }
 
   ionViewWillEnter() {
-    this.dataProvider.load().subscribe((data: any) => {
-      if (data && data.schedule && data.schedule[0] && data.schedule[0].groups) {
-        const sessionId = this.route.snapshot.paramMap.get('sessionId');
-        for (const group of data.schedule[0].groups) {
-          if (group && group.sessions) {
-            for (const session of group.sessions) {
-              if (session && session.id === sessionId) {
-                this.session = session;
+    this.idtraza = this.route.snapshot.paramMap.get('sessionId');
 
-                this.isFavorite = this.userProvider.hasFavorite(
-                  this.session.name
-                );
+    // this.dataProvider.load().subscribe((data: any) => {
+    //   if (data && data.schedule && data.schedule[0] && data.schedule[0].groups) {
+    //     const sessionId = this.route.snapshot.paramMap.get('sessionId');
 
-                break;
-              }
-            }
-          }
-        }
-      }
-    });
+    //     console.log(sessionId);
+    //     for (const group of data.schedule[0].groups) {
+    //       if (group && group.sessions) {
+    //         for (const session of group.sessions) {
+    //           if (session && session.id === sessionId) {
+    //             this.session = session;
+
+    //             this.isFavorite = this.userProvider.hasFavorite(
+    //               this.session.name
+    //             );
+
+    //             break;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // });
+
   }
 
   ionViewDidEnter() {

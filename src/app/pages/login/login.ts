@@ -9,6 +9,7 @@ import { UserData } from '../../providers/user-data';
 import { UserOptions } from '../../interfaces/user-options';
 import { HttpResponse } from '@angular/common/http';
 import { tokenName } from '@angular/compiler';
+import { AuthenticationService } from '../../services/authentication.service';
 
 
 
@@ -18,10 +19,13 @@ import { tokenName } from '@angular/compiler';
   styleUrls: ['./login.scss'],
 })
 export class LoginPage {
+
+  HAS_LOGGED_IN = 'hasLoggedIn';
   login: UserOptions = { username: '', password: '' };
   submitted = false;
 
   constructor(
+    private authenticationService: AuthenticationService,
     public userData: UserData,
     public router: Router,
     public storage: Storage
@@ -33,16 +37,19 @@ export class LoginPage {
       this.userData.login(this.login.username, this.login.password).subscribe((res: HttpResponse<any>) => {
 
         this.submitted = true;
-        console.log('login correcto');
-        console.log(res);
-        console.log('redirecciona');
+        this.authenticationService.isLoggedIn = true;
+
+        this.storage.set(this.HAS_LOGGED_IN, true);
+        this.storage.set('username', this.login.username);
+
         this.router.navigateByUrl('/app/tabs/schedule');
 
-        // console.log(res.['token']);
       }, err => {
         console.log('login incorrecto');
         console.log(err);
       });
+    } else {
+      console.log('form invalid');
     }
   }
 
