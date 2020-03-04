@@ -7,6 +7,8 @@ import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
 import { ScheduleService } from '../../services/schedule.service';
 import { HttpResponse } from '@angular/common/http';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'page-schedule',
@@ -41,12 +43,7 @@ export class SchedulePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.updateSchedule();
-
-    this.ios = this.config.get('mode') === 'ios';
-  }
-
-  updateSchedule() {
+    // this.updateSchedule();
     // Close any open sliding items when the schedule updates
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
@@ -55,13 +52,60 @@ export class SchedulePage implements OnInit {
     console.clear();
     console.log('intentando obtener datos');
     this.esperandoDatosSchedule = true;
+
+
     this.scheduleService.getScheduleData().subscribe((res: HttpResponse<any>) => {
+      /** los guarda en esta variable. */
       this.groups2 = res.body;
-      this.esperandoDatosSchedule = false
       console.log(this.groups2);
+    }, (err) => {
+      console.log(err);
     });
 
-    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+    this.ios = this.config.get('mode') === 'ios';
+  }
+
+  getGroups2() {
+    return of(this.groups2);
+  }
+  filter(    
+    queryText = '',
+  ) {
+    return this.getGroups2().pipe(
+      map((data: any) => {
+
+
+        queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+        const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
+
+        data.forEach((group: any) => {
+          group.hide = true;
+
+          group.sessions.forEach((session: any) => {
+            // check if this session should show or not
+            this.scheduleService.filterSession(session, queryWords);
+
+            if (!session.hide) {
+              // if this session is not hidden then this group should show
+              group.hide = false;
+              data.shownSessions++;
+            }
+          });
+        });
+
+        return data;
+      })
+    );
+  }
+
+  updateSchedule() {
+
+
+    /** Trae los datos de la API */
+
+
+    /** Procesa los datos, incluye filtrado por keyword */
+    this.filter(this.queryText).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
     });
