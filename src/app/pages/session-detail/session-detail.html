@@ -16,6 +16,7 @@
 </ion-header>
 
 <ion-content>
+  
   <div *ngIf="session" class="ion-padding">
     <h1>{{idtraza}}</h1>
     <h1>{{session.name}}</h1>
@@ -24,6 +25,17 @@
     <ion-text color="medium">
       {{session.timeStart}} &ndash; {{session.timeEnd}}
       <br /> {{session.location}}
+    </ion-text>
+  </div>
+
+  <div *ngIf="datos" class="ion-padding">
+    
+    <h1>{{ datos.traza_patente }}</h1>
+    
+    <p>{{ datos.seguro }}</p>
+    <ion-text color="medium">
+      {{ datos.vhMarca }} &#45; {{ datos.vhModelo }}
+      <br /> sector
     </ion-text>
   </div>
 
@@ -48,21 +60,12 @@
 
   <ion-grid>
     
-    <ion-row>
+    <ion-row *ngFor="let pieza of piezas">
       <ion-col size="8">
-        Paragolpes delantero
+        {{ pieza.pieza_nombre }}
       </ion-col>
       <ion-col>
-        Reparar
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size="8">
-        Paragolpes trasero
-      </ion-col>
-      <ion-col>
-        Pintar
+        {{ pieza.pieza_accion }}
       </ion-col>
     </ion-row>
 

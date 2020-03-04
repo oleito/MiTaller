@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
+import { ApiService } from '../../services/api.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'page-session-detail',
@@ -14,41 +16,25 @@ export class SessionDetailPage implements OnInit {
   isFavorite = false;
   defaultHref = '';
   idtraza: any;
+  piezas: any = [];
+  datos: any = [];
 
   constructor(
     private dataProvider: ConferenceData,
     private userProvider: UserData,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private apiService: ApiService
   ) { }
   ngOnInit() {
     console.clear();
+
   }
 
   ionViewWillEnter() {
     this.idtraza = this.route.snapshot.paramMap.get('sessionId');
-
-    // this.dataProvider.load().subscribe((data: any) => {
-    //   if (data && data.schedule && data.schedule[0] && data.schedule[0].groups) {
-    //     const sessionId = this.route.snapshot.paramMap.get('sessionId');
-
-    //     console.log(sessionId);
-    //     for (const group of data.schedule[0].groups) {
-    //       if (group && group.sessions) {
-    //         for (const session of group.sessions) {
-    //           if (session && session.id === sessionId) {
-    //             this.session = session;
-
-    //             this.isFavorite = this.userProvider.hasFavorite(
-    //               this.session.name
-    //             );
-
-    //             break;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // });
+    console.log(this.idtraza);
+    this.updateDatos();
+    this.updatePiezas();
 
   }
 
@@ -82,5 +68,28 @@ export class SessionDetailPage implements OnInit {
     // await loading.present();
     // await loading.onWillDismiss();
     // fab.close();
+  }
+  updatePiezas() {
+    this.getPiezasByTraza(this.idtraza).subscribe(
+      (res: HttpResponse<any>) => {
+        this.piezas = res.body;
+      }
+    );
+  }
+  updateDatos() {
+    this.getDatosByTraza(this.idtraza).subscribe(
+      (res: HttpResponse<any>) => {
+        this.datos = res.body[0];
+        console.log(this.datos);
+      }
+    );
+  }
+
+  getPiezasByTraza(idtraza) {
+    return this.apiService.getData('traza/piezas?idtraza=' + idtraza);
+  }
+
+  getDatosByTraza(idtraza: number) {
+    return this.apiService.getData('traza/datos?idtraza=' + idtraza);
   }
 }
