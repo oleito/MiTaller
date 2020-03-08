@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleFavorite()">
+        <ion-icon *ngIf="!isFavorite" slot="icon-only" name="star-outline"></ion-icon>
+        <ion-icon *ngIf="isFavorite" slot="icon-only" name="star"></ion-icon>
+      </ion-button>
+      <ion-button (click)="shareSession()">
+        <ion-icon slot="icon-only" name="share"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <h1>Camara: {{ idtraza }}</h1>
+
+</ion-content>

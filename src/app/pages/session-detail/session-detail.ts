@@ -60,14 +60,8 @@ export class SessionDetailPage implements OnInit {
     console.log('Clicked share session');
   }
 
-  async openSocial(network: string, fab: HTMLIonFabElement) {
-    // const loading = await this.loadingCtrl.create({
-    //   message: `Posting to ${network}`,
-    //   duration: (Math.random() * 1000) + 500
-    // });
-    // await loading.present();
-    // await loading.onWillDismiss();
-    // fab.close();
+  openSocial() {
+    console.log('openSocial');
   }
   updatePiezas() {
     this.getPiezasByTraza(this.idtraza).subscribe(

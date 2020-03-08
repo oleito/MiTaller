@@ -17,7 +17,7 @@ export class AuthenticationGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     console.log('AuthenticationGuard called');
     if (!this.authenticationService.isLoggedIn) {
-      console.log('logIn invalido');
+      console.log('AuthenticationGuard: invalid');
       this.router.navigate(['/login']);
       return false;
     }
